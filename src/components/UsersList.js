@@ -1,37 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Link, Route, Switch } from "react-router-dom";
-import UserProfile from "./UserProfile";
+import axios from "axios";
 
-const UsersList = () => {
-  const [listOfUSers, setlistOfUSers] = useState([]);
-  const axios = require("axios");
-
+const UsersList = ({ users, loadUsers, match, history }) => {
   useEffect(() => {
+    const getData = async () => {
+      return await axios
+        .get("https://jsonplaceholder.typicode.com/users")
+        .then((response) => loadUsers(response.data));
+    };
+
     getData();
   }, []);
-
-  const getData = () => {
-    axios
-      .get("https://jsonplaceholder.typicode.com/users")
-      .then(function (response) {
-        setlistOfUSers(response.data);
-      });
-  };
 
   return (
     <div className="bodybody">
       <div className="usersBtns">
-        {listOfUSers.map((user) => (
-          <button className="btn" key={user.id}>
-            <Link to={`/userslist/${user.id}`}>{user.name}</Link>
+        {users.map((user) => (
+          <button
+            className="btn"
+            key={user.id}
+            onClick={() => history.push(`/userslist/${user.id}`)}
+          >
+            {user.name}
           </button>
         ))}
-      </div>
-      <div>
-        <Route
-          path="/userslist/:userId"
-          render={(props) => <UserProfile users={listOfUSers} {...props} />}
-        />
       </div>
     </div>
   );
