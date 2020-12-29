@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import UserProfile from "./UserProfile";
 
-const UsersList = ({ match }) => {
+const UsersList = () => {
   const [listOfUSers, setlistOfUSers] = useState([]);
   const axios = require("axios");
 
@@ -23,13 +23,13 @@ const UsersList = ({ match }) => {
       <div className="usersBtns">
         {listOfUSers.map((user) => (
           <button className="btn" key={user.id}>
-            <Link to={`${match.url}/${user.id}`}>{user.name}</Link>
+            <Link to={`/userslist/${user.id}`}>{user.name}</Link>
           </button>
         ))}
       </div>
       <div>
         <Route
-          path={`${match.path}/:userId`}
+          path="/userslist/:userId"
           render={(props) => <UserProfile users={listOfUSers} {...props} />}
         />
       </div>
